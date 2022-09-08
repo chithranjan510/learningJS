@@ -124,5 +124,5 @@ function display(item)
 
     users.appendChild(li);
 
-    // console.log(1);
+    // console.log('its working');
 }
