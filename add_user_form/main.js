@@ -36,12 +36,16 @@ const name = document.querySelector('#name');
 const email = document.querySelector('#email');
 const msg = document.querySelector('.msg');
 const users = document.querySelector('#users');
-const printDetails = document.querySelector('button');
-// console.log(printDetails);
+const showDetails = document.querySelector('.show-btn');
+const hideDetails = document.querySelector('.hide-btn');
+
 
 
 myForm.addEventListener('submit', onSubmit);
-printDetails.addEventListener('click', onClick)
+showDetails.addEventListener('click', onClickShow);
+hideDetails.addEventListener('click', onClickHide);
+users.addEventListener('click', onClickEditOrDelete);
+
 
 function onSubmit(e){
     e.preventDefault();
@@ -97,8 +101,14 @@ function onSubmit(e){
 
 // onClick function for onclick event
 
-function onClick(e)
+function onClickShow(e)
 {
+    // remove any previous displays
+    while(users.firstChild)
+    {
+        users.removeChild(users.firstChild);
+    }
+
 
     // fetching the user data from local storage
 
@@ -115,14 +125,93 @@ function onClick(e)
 
 function display(item)
 {
-    let details = document.createTextNode(item.name + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + item.email);
+    let itemName = document.createTextNode(item.name + ' - ');
+    let itemDatails = document.createTextNode(item.email);
     // console.log(details);
 
     let li = document.createElement('li');
+    let del = document.createElement('button');
+    let edit = document.createElement('button');
 
-    li.appendChild(details);
+    edit.className = 'edit-btn';
+    del.className = 'del-btn';
+    // console.log(edit);
+
+    edit.appendChild(document.createTextNode('Edit'));
+    del.appendChild(document.createTextNode('Delete'));
+    
+    del.style.float = 'right';
+    edit.style.marginLeft = '5px';
+
+    li.appendChild(itemName);
+    li.appendChild(itemDatails);
+    li.appendChild(edit);
+    li.appendChild(del);
 
     users.appendChild(li);
 
     // console.log('its working');
+}
+
+
+// hiding the user data
+
+function onClickHide(e)
+{
+    while(users.firstChild)
+    {
+        users.removeChild(users.firstChild);
+    }
+}
+
+
+// editing and deleting detail of user
+
+function onClickEditOrDelete(e)
+{
+    if(e.target.classList.contains('del-btn'))
+    {
+
+        // REMOVING FROM LOCAL STORAGE
+
+        // https://www.w3schools.com/jsref/prop_node_childnodes.asp
+    
+        let liEmail = e.target.parentElement.childNodes[1].nodeValue;  // childNode[1] gives an object whereas childnode[1].nodeValue gives string
+        // console.log(typeof(liEmail));
+
+        localStorage.removeItem(liEmail);
+
+
+
+
+        // REMOVING FROM UI
+
+        // if(confirm('Are you sure?'))
+        // {
+            const li = e.target.parentElement;
+            users.removeChild(li);
+        // }
+    }
+
+    if(e.target.classList.contains('edit-btn'))
+    {
+        name.value = e.target.parentElement.childNodes[0].nodeValue;
+        email.value = e.target.parentElement.childNodes[1].nodeValue;
+
+        let liEmail = e.target.parentElement.childNodes[1].nodeValue;  // childNode[1] gives an object whereas childnode[1].nodeValue gives string
+        // console.log(typeof(liEmail));
+
+        localStorage.removeItem(liEmail);
+
+
+
+
+        // REMOVING FROM UI
+
+        // if(confirm('Are you sure?'))
+        // {
+            const li = e.target.parentElement;
+            users.removeChild(li);
+        // }
+    }
 }
