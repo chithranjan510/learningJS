@@ -75,13 +75,13 @@ function onSubmit(e){
 
         // adding to local storage as an object
 
-        let myObj = {                       
-            name:name.value,
-            email:email.value
-        }
+        // let myObj = {                       
+        //     name:name.value,
+        //     email:email.value
+        // }
 
-        let myObj_serielized = JSON.stringify(myObj);  // converting to string as local storage only takes string values
-        localStorage.setItem(email.value,myObj_serielized);
+        // let myObj_serielized = JSON.stringify(myObj);  // converting to string as local storage only takes string values
+        // localStorage.setItem(email.value,myObj_serielized);
 
         // console.log(localStorage);
 
@@ -89,6 +89,14 @@ function onSubmit(e){
         // console.log(myObj_deserielized);
 
         //clear fields
+
+        axios
+        .post('https://crudcrud.com/api/49b007203a2a4b859fb5841536d56863/appointmentData',{                       
+            name:name.value,
+            email:email.value
+        })
+        .then((res) => {console.log(res)})
+        .catch((err) => console.error(err))
 
         name.value = '';
         email.value = '';
@@ -112,9 +120,17 @@ function onClickShow(e)
 
     // fetching the user data from local storage
 
-    Object.keys(localStorage).forEach((key) => {
-        const userDetails = JSON.parse(localStorage.getItem(key));
-        display(userDetails);
+    // Object.keys(localStorage).forEach((key) => {
+    //     const userDetails = JSON.parse(localStorage.getItem(key));
+    //     display(userDetails);
+    // })
+
+    axios
+    .get('https://crudcrud.com/api/49b007203a2a4b859fb5841536d56863/appointmentData')
+    .then((res) => {
+        res.data.forEach((response) => {
+            display(response);
+        });
     })
 
     // console.log('its working');
