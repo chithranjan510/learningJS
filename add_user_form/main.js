@@ -96,7 +96,10 @@ function onSubmit(e){
             email:email.value
         })
         .then((res) => {console.log(res)})
-        .catch((err) => console.error(err))
+        .catch((err) => {
+            document.body.innerHTML = document.body.innerHTML +'<h4>Something went wrong</h4>';
+            console.error(err)
+        })
 
         name.value = '';
         email.value = '';
@@ -131,6 +134,10 @@ function onClickShow(e)
         res.data.forEach((response) => {
             display(response);
         });
+    })
+    .catch((err) => {
+        document.body.innerHTML = document.body.innerHTML +'<h4>Something went wrong</h4>';
+        console.log(err);
     })
 
     // console.log('its working');
