@@ -237,15 +237,34 @@ function onClickEditOrDelete(e)
 
     if(e.target.classList.contains('edit-btn'))
     {
-        // name.value = e.target.parentElement.childNodes[0].nodeValue;
-        // email.value = e.target.parentElement.childNodes[1].nodeValue;
+        name.value = e.target.parentElement.childNodes[0].nodeValue;
+        email.value = e.target.parentElement.childNodes[1].nodeValue;
 
         // let liEmail = e.target.parentElement.childNodes[1].nodeValue;  // childNode[1] gives an object whereas childnode[1].nodeValue gives string
         // // console.log(typeof(liEmail));
 
         // localStorage.removeItem(liEmail);
 
+        const userEmail = e.target.parentElement.childNodes[1].nodeValue;
+        // console.log(userEmail);
 
+        axios.get('https://crudcrud.com/api/49b007203a2a4b859fb5841536d56863/appointmentData')
+        .then((res) => {
+            res.data.forEach((user) => {
+                if(user.email === userEmail) {
+                    axios.delete(`https://crudcrud.com/api/49b007203a2a4b859fb5841536d56863/appointmentData/${user._id}`)
+                    .then(() => {console.log('Data deleted, please update it with correct information')})
+                    .catch((err) => {
+                        document.body.innerHTML = document.body.innerHTML +'<h4>Something went wrong</h4>';
+                        console.log(err);
+                    })
+                }
+            })
+        })
+        .catch((err) => {
+            document.body.innerHTML = document.body.innerHTML +'<h4>Something went wrong</h4>';
+            console.log(err);
+        })
 
 
         // REMOVING FROM UI
